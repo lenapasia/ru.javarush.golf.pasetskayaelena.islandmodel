@@ -1,6 +1,6 @@
 package ru.javarush.golf.pasetskayaelena.islandmodel.configs;
 
-import ru.javarush.golf.pasetskayaelena.islandmodel.biotas.animals.AnimalType;
+import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals.AnimalType;
 
 import java.util.Map;
 

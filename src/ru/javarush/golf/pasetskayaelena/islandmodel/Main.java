@@ -2,13 +2,13 @@ package ru.javarush.golf.pasetskayaelena.islandmodel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.javarush.golf.pasetskayaelena.islandmodel.configs.IslandConfig;
-import ru.javarush.golf.pasetskayaelena.islandmodel.configs.IslandConfigGenerator;
+import ru.javarush.golf.pasetskayaelena.islandmodel.generators.IslandConfigGenerator;
 import ru.javarush.golf.pasetskayaelena.islandmodel.processors.AnimalLifeCycleProcessor;
 import ru.javarush.golf.pasetskayaelena.islandmodel.processors.PlantGenerationProcessor;
-import ru.javarush.golf.pasetskayaelena.islandmodel.space.Island;
-import ru.javarush.golf.pasetskayaelena.islandmodel.space.IslandGenerator;
-import ru.javarush.golf.pasetskayaelena.islandmodel.space.IslandStatisticsDisplayer;
-import ru.javarush.golf.pasetskayaelena.islandmodel.space.Location;
+import ru.javarush.golf.pasetskayaelena.islandmodel.entities.space.Island;
+import ru.javarush.golf.pasetskayaelena.islandmodel.generators.IslandGenerator;
+import ru.javarush.golf.pasetskayaelena.islandmodel.utils.IslandStatisticsDisplayer;
+import ru.javarush.golf.pasetskayaelena.islandmodel.entities.space.Location;
 import ru.javarush.golf.pasetskayaelena.islandmodel.utils.ListUtils;
 
 import java.io.FileWriter;
@@ -25,8 +25,18 @@ import java.util.concurrent.TimeUnit;
 public class Main {
     private static final String configFilePath = "island-config.json";
 
+    public static void testRound() {
+        int requiredFoodInKgForFullSatiety = 36;
+        int weight = 1;
+
+        int requiredPlantsCount = requiredFoodInKgForFullSatiety/weight;
+        System.out.println(requiredPlantsCount);
+    }
 
     public static void main(String[] args) throws IOException {
+
+        testRound();
+
         IslandConfig islandConfig = loadConfig();
 
         System.out.println("*** Сотворение мира");
@@ -43,9 +53,6 @@ public class Main {
         runThreads(island, islandConfig);
 
         processConsoleInput(island);
-
-
-
     }
 
     private static IslandConfig loadConfig() throws IOException {

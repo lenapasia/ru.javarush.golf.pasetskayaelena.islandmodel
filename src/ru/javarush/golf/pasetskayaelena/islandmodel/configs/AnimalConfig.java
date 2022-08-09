@@ -10,7 +10,7 @@ public class AnimalConfig extends BiotaConfig {
     /**
      * Сколько килограммов пищи нужно животному для полного насыщения
      */
-    public float foodSatiety;
+    public double foodSatiety;
 
     /**
      * Максимальное количество детенышей у каждого вида

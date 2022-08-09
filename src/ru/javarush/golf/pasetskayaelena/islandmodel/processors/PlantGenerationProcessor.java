@@ -1,10 +1,9 @@
 package ru.javarush.golf.pasetskayaelena.islandmodel.processors;
 
-import ru.javarush.golf.pasetskayaelena.islandmodel.biotas.plants.Plant;
+import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.plants.Plant;
 import ru.javarush.golf.pasetskayaelena.islandmodel.configs.IslandConfig;
-import ru.javarush.golf.pasetskayaelena.islandmodel.space.Location;
+import ru.javarush.golf.pasetskayaelena.islandmodel.entities.space.Location;
 
-import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,11 +32,11 @@ public class PlantGenerationProcessor implements Runnable {
             int remainsToLimit = location.countPlants() + plantsGenerationCount - maxPlantsCount;
             if (remainsToLimit < 0) {
                 for (int i = 0; i < plantsGenerationCount; i++) {
-                    location.addBiota(new Plant());
+                    location.addBiota(new Plant(islandConfig.plantConfig));
                 }
             } else {
                 for (int i = 0; i < plantsGenerationCount - remainsToLimit; i++) {
-                    location.addBiota(new Plant());
+                    location.addBiota(new Plant(islandConfig.plantConfig));
                 }
             }
         }
