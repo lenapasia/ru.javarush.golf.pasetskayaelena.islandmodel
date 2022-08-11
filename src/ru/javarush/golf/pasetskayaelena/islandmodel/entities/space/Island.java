@@ -12,4 +12,13 @@ public class Island {
     public Island(ArrayList<Location> locations) {
         this.locations = locations;
     }
+
+    public Location findLocation(int x, int y) {
+        for (Location location : locations) {
+            if (location.getX() == x && location.getY() == y) {
+                return location;
+            }
+        }
+        return null;
+    }
 }

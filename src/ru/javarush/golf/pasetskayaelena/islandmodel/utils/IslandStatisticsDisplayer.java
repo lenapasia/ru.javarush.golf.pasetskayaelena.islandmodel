@@ -11,6 +11,7 @@ import ru.javarush.golf.pasetskayaelena.islandmodel.utils.AnimalSymbol;
 import java.util.*;
 
 public final class IslandStatisticsDisplayer {
+
     public void display(Island island) {
         System.out.println("---STATISTICS---");
         int totalPlantsCount = 0;

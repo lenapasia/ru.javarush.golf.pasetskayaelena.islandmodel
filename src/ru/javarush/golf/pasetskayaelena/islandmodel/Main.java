@@ -2,6 +2,8 @@ package ru.javarush.golf.pasetskayaelena.islandmodel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.javarush.golf.pasetskayaelena.islandmodel.configs.IslandConfig;
+import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals.Animal;
+import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals.DirectionType;
 import ru.javarush.golf.pasetskayaelena.islandmodel.generators.IslandConfigGenerator;
 import ru.javarush.golf.pasetskayaelena.islandmodel.processors.AnimalLifeCycleProcessor;
 import ru.javarush.golf.pasetskayaelena.islandmodel.processors.PlantGenerationProcessor;
@@ -10,6 +12,7 @@ import ru.javarush.golf.pasetskayaelena.islandmodel.generators.IslandGenerator;
 import ru.javarush.golf.pasetskayaelena.islandmodel.utils.IslandStatisticsDisplayer;
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.space.Location;
 import ru.javarush.golf.pasetskayaelena.islandmodel.utils.ListUtils;
+import ru.javarush.golf.pasetskayaelena.islandmodel.utils.LogExceptionScheduledExecutorService;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,14 +26,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
-    private static final String configFilePath = "island-config.json";
+    private static final String CONFIG_FILE_PATH = "island-config.json";
 
     public static void testRound() {
-        int requiredFoodInKgForFullSatiety = 36;
-        int weight = 1;
-
-        int requiredPlantsCount = requiredFoodInKgForFullSatiety/weight;
-        System.out.println(requiredPlantsCount);
+        DirectionType[] directionTypes = { DirectionType.Right, DirectionType.Left};
+        DirectionType directionType = Animal.chooseMoveDirection(directionTypes);
+        System.out.println(directionType);
     }
 
     public static void main(String[] args) throws IOException {
@@ -60,19 +61,19 @@ public class Main {
 
         IslandConfig islandConfig;
         // если файл конфигурации не существует, то создать его с значениями по умолчанию
-        if (Files.notExists(Path.of(configFilePath))) {
+        if (Files.notExists(Path.of(CONFIG_FILE_PATH))) {
             islandConfig = new IslandConfigGenerator().generate();
 
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(islandConfig);
             System.out.println(json);
 
-            try (FileWriter writer = new FileWriter(configFilePath)) {
+            try (FileWriter writer = new FileWriter(CONFIG_FILE_PATH)) {
                 writer.write(json);
             }
         } else {
             // иначе прочитать и десериализовать файл конфигурации
-            String jsonString = Files.readString(Path.of(configFilePath));
+            String jsonString = Files.readString(Path.of(CONFIG_FILE_PATH));
 
             islandConfig = new ObjectMapper().readValue(jsonString, IslandConfig.class);
         }
@@ -103,11 +104,12 @@ public class Main {
 
         List<Location>[] splitLocations = ListUtils.split(allLocations, locationsCountPerThread);
 
-        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(splitLocations.length*2);
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(splitLocations.length * 2);
+        LogExceptionScheduledExecutorService executorService = new LogExceptionScheduledExecutorService(scheduledExecutorService);
 
         for (List<Location> locationsPerThread : splitLocations) {
-            executorService.scheduleAtFixedRate(new PlantGenerationProcessor(locationsPerThread, islandConfig), 0, 5, TimeUnit.SECONDS);
-            executorService.scheduleAtFixedRate(new AnimalLifeCycleProcessor(locationsPerThread, islandConfig), 0, islandConfig.simulationCycleDuration, TimeUnit.SECONDS);
+            executorService.scheduleAtFixedRate(new PlantGenerationProcessor(locationsPerThread, islandConfig), "Error in plants processor", 0, islandConfig.simulationCycleDuration, TimeUnit.SECONDS);
+            executorService.scheduleAtFixedRate(new AnimalLifeCycleProcessor(locationsPerThread, islandConfig, island), "Error in animal processor", 0, islandConfig.simulationCycleDuration, TimeUnit.SECONDS);
         }
     }
 }

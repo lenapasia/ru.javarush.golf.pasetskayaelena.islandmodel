@@ -18,6 +18,8 @@ import java.util.Map;
 public class IslandGenerator {
 
     public Island generate(IslandConfig islandConfig) {
+        AnimalGenerator animalGenerator = new AnimalGenerator(islandConfig);
+
         ArrayList<Location> locations = new ArrayList<>();
         //сгенерировать локации согласно конфигурации
 
@@ -65,12 +67,10 @@ public class IslandGenerator {
 
                     for (int n = 0; n < animalsCount; n++) {
 
-                        biotas.add(createByType(eachAnimalType, islandConfig));
+                        biotas.add(animalGenerator.createByType(eachAnimalType));
 
                     }
-
                 }
-
                 locations.add(new Location(i, j, biotas));
             }
         }
@@ -78,25 +78,5 @@ public class IslandGenerator {
         return new Island(locations);
     }
 
-    private Animal createByType(AnimalType animalType, IslandConfig islandConfig) {
-        AnimalConfig animalConfig = islandConfig.animalTypeToConfig.get(animalType);
-        switch (animalType) {
-            case Wolf -> {return new Wolf(animalConfig);}
-            case Boa -> {return new Boa(animalConfig);}
-            case Fox -> {return new Fox(animalConfig);}
-            case Bear -> {return new Bear(animalConfig);}
-            case Eagle -> {return new Eagle(animalConfig);}
-            case Horse -> {return new Horse(animalConfig);}
-            case Deer -> {return new Deer(animalConfig);}
-            case Rabbit -> {return new Rabbit(animalConfig);}
-            case Mouse -> {return new Mouse(animalConfig);}
-            case Goat -> {return new Goat(animalConfig);}
-            case Sheep -> {return new Sheep(animalConfig);}
-            case Boar -> {return new Boar(animalConfig);}
-            case Buffalo -> {return new Buffalo(animalConfig);}
-            case Duck -> {return new Duck(animalConfig);}
-            case Caterpillar -> {return new Caterpillar(animalConfig);}
-            default -> throw new RuntimeException();
-        }
-    }
+
 }

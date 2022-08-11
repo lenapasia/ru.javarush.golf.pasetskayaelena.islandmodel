@@ -61,6 +61,7 @@ public class IslandConfigGenerator {
         animalConfig.startQuantity = 70;
         animalConfig.maxBabiesQuantity = 5;
         animalConfig.foodSatiety = 8;
+        animalConfig.moveSpeed = 3;
 
         return animalConfig;
     }
@@ -72,6 +73,7 @@ public class IslandConfigGenerator {
         animalConfig.startQuantity = 40;
         animalConfig.maxBabiesQuantity = 30;
         animalConfig.foodSatiety = 3;
+        animalConfig.moveSpeed = 1;
 
         return animalConfig;
     }
@@ -80,8 +82,10 @@ public class IslandConfigGenerator {
         AnimalConfig animalConfig = new AnimalConfig();
         animalConfig.weight = 8;
         animalConfig.maxQuantityAtLocation = 30;
+        animalConfig.maxBabiesQuantity = 7;
         animalConfig.startQuantity = 50;
         animalConfig.foodSatiety = 2;
+        animalConfig.moveSpeed = 2;
 
         return animalConfig;
     }
@@ -92,6 +96,8 @@ public class IslandConfigGenerator {
         animalConfig.maxQuantityAtLocation = 5;
         animalConfig.startQuantity = 30;
         animalConfig.foodSatiety = 80;
+        animalConfig.moveSpeed = 2;
+        animalConfig.maxBabiesQuantity = 2;
 
         return animalConfig;
     }
@@ -102,6 +108,8 @@ public class IslandConfigGenerator {
         animalConfig.maxQuantityAtLocation = 20;
         animalConfig.startQuantity = 30;
         animalConfig.foodSatiety = 1;
+        animalConfig.moveSpeed = 3;
+        animalConfig.maxBabiesQuantity = 2;
 
         return animalConfig;
     }
@@ -112,6 +120,8 @@ public class IslandConfigGenerator {
         animalConfig.maxQuantityAtLocation = 20;
         animalConfig.startQuantity = 60;
         animalConfig.foodSatiety = 60;
+        animalConfig.moveSpeed = 4;
+        animalConfig.maxBabiesQuantity = 1;
 
         return animalConfig;
     }
@@ -122,6 +132,8 @@ public class IslandConfigGenerator {
         animalConfig.maxQuantityAtLocation = 20;
         animalConfig.startQuantity = 20;
         animalConfig.foodSatiety = 50;
+        animalConfig.moveSpeed = 4;
+        animalConfig.maxBabiesQuantity = 1;
 
         return animalConfig;
     }
@@ -132,6 +144,8 @@ public class IslandConfigGenerator {
         animalConfig.maxQuantityAtLocation = 150;
         animalConfig.startQuantity = 50;
         animalConfig.foodSatiety = 0.45;
+        animalConfig.moveSpeed = 2;
+        animalConfig.maxBabiesQuantity = 4;
 
         return animalConfig;
     }
@@ -142,6 +156,8 @@ public class IslandConfigGenerator {
         animalConfig.maxQuantityAtLocation = 500;
         animalConfig.startQuantity = 30;
         animalConfig.foodSatiety = 0.01;
+        animalConfig.moveSpeed = 1;
+        animalConfig.maxBabiesQuantity = 12;
 
         return animalConfig;
     }
@@ -152,6 +168,8 @@ public class IslandConfigGenerator {
         animalConfig.maxQuantityAtLocation = 140;
         animalConfig.startQuantity = 40;
         animalConfig.foodSatiety = 10;
+        animalConfig.moveSpeed = 3;
+        animalConfig.maxBabiesQuantity = 3;
 
         return animalConfig;
     }
@@ -162,6 +180,8 @@ public class IslandConfigGenerator {
         animalConfig.maxQuantityAtLocation = 140;
         animalConfig.startQuantity = 20;
         animalConfig.foodSatiety = 15;
+        animalConfig.moveSpeed = 3;
+        animalConfig.maxBabiesQuantity = 2;
 
         return animalConfig;
     }
@@ -172,6 +192,8 @@ public class IslandConfigGenerator {
         animalConfig.maxQuantityAtLocation = 50;
         animalConfig.startQuantity = 30;
         animalConfig.foodSatiety = 50;
+        animalConfig.moveSpeed = 2;
+        animalConfig.maxBabiesQuantity = 9;
 
         return animalConfig;
     }
@@ -182,6 +204,9 @@ public class IslandConfigGenerator {
         animalConfig.maxQuantityAtLocation = 10;
         animalConfig.startQuantity = 70;
         animalConfig.foodSatiety = 100;
+        animalConfig.moveSpeed = 3;
+        animalConfig.maxBabiesQuantity = 1;
+
 
         return animalConfig;
     }
@@ -192,6 +217,8 @@ public class IslandConfigGenerator {
         animalConfig.maxQuantityAtLocation = 200;
         animalConfig.startQuantity = 40;
         animalConfig.foodSatiety = 0.15;
+        animalConfig.moveSpeed = 4;
+        animalConfig.maxBabiesQuantity = 6;
 
         return animalConfig;
     }
@@ -202,6 +229,8 @@ public class IslandConfigGenerator {
         animalConfig.maxQuantityAtLocation = 1000;
         animalConfig.startQuantity = 50;
         animalConfig.foodSatiety = 0;
+        animalConfig.moveSpeed = 0;
+        animalConfig.maxBabiesQuantity = 6;
 
         return animalConfig;
     }

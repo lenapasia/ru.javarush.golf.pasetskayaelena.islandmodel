@@ -2,14 +2,21 @@ package ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals;
 
 import ru.javarush.golf.pasetskayaelena.islandmodel.configs.AnimalConfig;
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.Biota;
+import ru.javarush.golf.pasetskayaelena.islandmodel.utils.Randomizer;
 
 public abstract class Animal extends Biota {
+
+    private static final int MIN_SATIETY = 0;
+    private static final int MAX_SATIETY = 100;
+    private static final int SATIETY_EXHAUSTION_STEP = 5;
+    private static final int SATIETY_FOR_REPRODUCTION = 80;
+
     private final AnimalConfig animalConfig;
 
     /**
      * Насыщение в %: 0-100. Когда = 0 - животное умирает.
      */
-    private int satiety = 100;
+    private int satiety = MAX_SATIETY;
 
     public Animal(AnimalConfig animalConfig) {
         this.animalConfig = animalConfig;
@@ -26,43 +33,49 @@ public abstract class Animal extends Biota {
      * @return Сколько требуется килограмм пищи для полного насыщения
      */
     public int getRequiredFoodForFullSatiety() {
-        int requiredFoodForFullSatiety = (int) Math.round(animalConfig.foodSatiety * (100 - satiety) / 100);
-        return requiredFoodForFullSatiety;
+        return (int) Math.round(animalConfig.foodSatiety * (MAX_SATIETY - satiety) / 100);
     }
 
-    public Animal[] reproduce() {
-        //TODO
-        return null;
+    public boolean isReadyToReproduce() {
+        return satiety > SATIETY_FOR_REPRODUCTION;
     }
 
-    public DirectionType chooseMoveDirection(DirectionType[] availableDirections) {
-        //TODO
-        return null;
+    /**
+     * @return Выбор направления движения
+     */
+    public static DirectionType chooseMoveDirection(DirectionType[] availableDirections) {
+        int randomIndex = (int) (Math.random() * availableDirections.length);
+        return availableDirections[randomIndex];
     }
+
+    public int chooseMoveSpeed() {
+        return Randomizer.rnd(1, animalConfig.moveSpeed);
+    }
+
 
     public int getSatiety() {
         return satiety;
     }
 
     public boolean decreaseSatiety() {
-        if ((satiety - 10) < 0) {
-            satiety = 0;
+        if ((satiety - SATIETY_EXHAUSTION_STEP) < MIN_SATIETY) {
+            satiety = MIN_SATIETY;
         } else {
-            satiety -= 10;
+            satiety -= SATIETY_EXHAUSTION_STEP;
         }
-        return satiety > 0 ? true : false;
+        return satiety > MIN_SATIETY ? true : false;
     }
 
     public void eat(Biota biota) {
-        if (satiety >= 100) {
-            throw new RuntimeException();
+        if (satiety >= MAX_SATIETY) {
+            throw new RuntimeException("Нельзя съесть: насыщение = 100%");
         }
 
-        int eatingSatiety = (int) (100 * 1 * biota.getWeight() / animalConfig.foodSatiety);
-        if ((satiety + eatingSatiety) < 100) {
+        int eatingSatiety = (int) (100 * biota.getWeight() / animalConfig.foodSatiety);
+        if ((satiety + eatingSatiety) < MAX_SATIETY) {
             satiety = satiety + eatingSatiety;
         } else {
-            satiety = 100;
+            satiety = MAX_SATIETY;
         }
     }
 }
