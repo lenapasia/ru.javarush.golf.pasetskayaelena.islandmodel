@@ -1,10 +1,8 @@
 import org.junit.Assert;
 import org.junit.Test;
-import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals.DirectionType;
+import ru.javarush.golf.pasetskayaelena.islandmodel.entities.motion.DirectionType;
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.space.Coordinates;
 import ru.javarush.golf.pasetskayaelena.islandmodel.utils.DirectionUtils;
-
-import static org.junit.Assert.*;
 
 public class DirectionUtilsTest {
 
