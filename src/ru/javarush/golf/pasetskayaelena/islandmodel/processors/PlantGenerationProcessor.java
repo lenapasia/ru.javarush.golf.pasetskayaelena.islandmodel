@@ -9,7 +9,7 @@ import java.util.List;
 
 public class PlantGenerationProcessor implements Runnable {
 
-    private static final int plantsGenerationCount = 18;
+    private static final int plantsGenerationCount = 125;
 
     private final List<Location> locations;
     private final IslandConfig islandConfig;

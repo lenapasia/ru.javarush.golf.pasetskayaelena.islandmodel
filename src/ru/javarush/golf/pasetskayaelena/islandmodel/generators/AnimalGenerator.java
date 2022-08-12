@@ -33,7 +33,7 @@ public final class AnimalGenerator {
             case Buffalo -> {return new Buffalo(animalConfig);}
             case Duck -> {return new Duck(animalConfig);}
             case Caterpillar -> {return new Caterpillar(animalConfig);}
-            default -> throw new RuntimeException();
+            default -> throw new RuntimeException("Unsupported animal type: " + animalType);
         }
     }
 }

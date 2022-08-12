@@ -1,6 +1,6 @@
 package ru.javarush.golf.pasetskayaelena.islandmodel.utils;
 
-import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals.DirectionType;
+import ru.javarush.golf.pasetskayaelena.islandmodel.entities.motion.DirectionType;
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.space.Coordinates;
 
 import java.util.Arrays;

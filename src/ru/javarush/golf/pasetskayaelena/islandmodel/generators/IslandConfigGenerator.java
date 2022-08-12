@@ -12,8 +12,8 @@ public class IslandConfigGenerator {
     public IslandConfig generate() {
         IslandConfig islandConfig = new IslandConfig();
         islandConfig.simulationCycleDuration = 1;
-        islandConfig.width = 2; // 20
-        islandConfig.height = 5;// 100
+        islandConfig.width = 20; // 20
+        islandConfig.height = 100; // 100
         islandConfig.plantConfig = generatePlant();
         islandConfig.animalTypeToConfig = generateAnimals();
 
@@ -63,6 +63,18 @@ public class IslandConfigGenerator {
         animalConfig.foodSatiety = 8;
         animalConfig.moveSpeed = 3;
 
+        animalConfig.eatingProbability = new HashMap<>() {{
+            put(AnimalType.Horse, 10);
+            put(AnimalType.Deer, 15);
+            put(AnimalType.Rabbit, 60);
+            put(AnimalType.Mouse, 80);
+            put(AnimalType.Goat, 60);
+            put(AnimalType.Sheep, 70);
+            put(AnimalType.Boar, 15);
+            put(AnimalType.Buffalo, 10);
+            put(AnimalType.Duck, 40);
+        }};
+
         return animalConfig;
     }
 
@@ -74,6 +86,13 @@ public class IslandConfigGenerator {
         animalConfig.maxBabiesQuantity = 30;
         animalConfig.foodSatiety = 3;
         animalConfig.moveSpeed = 1;
+
+        animalConfig.eatingProbability = new HashMap<>() {{
+            put(AnimalType.Fox, 15);
+            put(AnimalType.Rabbit, 20);
+            put(AnimalType.Mouse, 40);
+            put(AnimalType.Duck, 10);
+        }};
 
         return animalConfig;
     }
@@ -87,6 +106,13 @@ public class IslandConfigGenerator {
         animalConfig.foodSatiety = 2;
         animalConfig.moveSpeed = 2;
 
+        animalConfig.eatingProbability = new HashMap<>() {{
+            put(AnimalType.Rabbit, 70);
+            put(AnimalType.Mouse, 90);
+            put(AnimalType.Duck, 60);
+            put(AnimalType.Caterpillar, 40);
+        }};
+
         return animalConfig;
     }
 
@@ -99,6 +125,19 @@ public class IslandConfigGenerator {
         animalConfig.moveSpeed = 2;
         animalConfig.maxBabiesQuantity = 2;
 
+        animalConfig.eatingProbability = new HashMap<>() {{
+            put(AnimalType.Boa, 80);
+            put(AnimalType.Horse, 40);
+            put(AnimalType.Deer, 80);
+            put(AnimalType.Rabbit, 80);
+            put(AnimalType.Mouse, 90);
+            put(AnimalType.Goat, 70);
+            put(AnimalType.Sheep, 70);
+            put(AnimalType.Boar, 50);
+            put(AnimalType.Buffalo, 20);
+            put(AnimalType.Duck, 10);
+        }};
+
         return animalConfig;
     }
 
@@ -106,10 +145,17 @@ public class IslandConfigGenerator {
         AnimalConfig animalConfig = new AnimalConfig();
         animalConfig.weight = 6;
         animalConfig.maxQuantityAtLocation = 20;
-        animalConfig.startQuantity = 30;
+        animalConfig.startQuantity = 40;
         animalConfig.foodSatiety = 1;
         animalConfig.moveSpeed = 3;
         animalConfig.maxBabiesQuantity = 2;
+
+        animalConfig.eatingProbability = new HashMap<>() {{
+            put(AnimalType.Fox, 10);
+            put(AnimalType.Rabbit, 90);
+            put(AnimalType.Mouse, 90);
+            put(AnimalType.Duck, 80);
+        }};
 
         return animalConfig;
     }
@@ -118,9 +164,9 @@ public class IslandConfigGenerator {
         AnimalConfig animalConfig = new AnimalConfig();
         animalConfig.weight = 400;
         animalConfig.maxQuantityAtLocation = 20;
-        animalConfig.startQuantity = 60;
+        animalConfig.startQuantity = 120;
         animalConfig.foodSatiety = 60;
-        animalConfig.moveSpeed = 4;
+        animalConfig.moveSpeed = 5;
         animalConfig.maxBabiesQuantity = 1;
 
         return animalConfig;
@@ -142,7 +188,7 @@ public class IslandConfigGenerator {
         AnimalConfig animalConfig = new AnimalConfig();
         animalConfig.weight = 2;
         animalConfig.maxQuantityAtLocation = 150;
-        animalConfig.startQuantity = 50;
+        animalConfig.startQuantity = 100;
         animalConfig.foodSatiety = 0.45;
         animalConfig.moveSpeed = 2;
         animalConfig.maxBabiesQuantity = 4;
@@ -154,10 +200,14 @@ public class IslandConfigGenerator {
         AnimalConfig animalConfig = new AnimalConfig();
         animalConfig.weight = 0.05;
         animalConfig.maxQuantityAtLocation = 500;
-        animalConfig.startQuantity = 30;
+        animalConfig.startQuantity = 150;
         animalConfig.foodSatiety = 0.01;
         animalConfig.moveSpeed = 1;
         animalConfig.maxBabiesQuantity = 12;
+
+        animalConfig.eatingProbability = new HashMap<>() {{
+            put(AnimalType.Caterpillar, 90);
+        }};
 
         return animalConfig;
     }
@@ -178,7 +228,7 @@ public class IslandConfigGenerator {
         AnimalConfig animalConfig = new AnimalConfig();
         animalConfig.weight = 70;
         animalConfig.maxQuantityAtLocation = 140;
-        animalConfig.startQuantity = 20;
+        animalConfig.startQuantity = 40;
         animalConfig.foodSatiety = 15;
         animalConfig.moveSpeed = 3;
         animalConfig.maxBabiesQuantity = 2;
@@ -195,6 +245,11 @@ public class IslandConfigGenerator {
         animalConfig.moveSpeed = 2;
         animalConfig.maxBabiesQuantity = 9;
 
+        animalConfig.eatingProbability = new HashMap<>() {{
+            put(AnimalType.Mouse, 50);
+            put(AnimalType.Caterpillar, 90);
+        }};
+
         return animalConfig;
     }
 
@@ -207,7 +262,6 @@ public class IslandConfigGenerator {
         animalConfig.moveSpeed = 3;
         animalConfig.maxBabiesQuantity = 1;
 
-
         return animalConfig;
     }
 
@@ -215,10 +269,14 @@ public class IslandConfigGenerator {
         AnimalConfig animalConfig = new AnimalConfig();
         animalConfig.weight = 1;
         animalConfig.maxQuantityAtLocation = 200;
-        animalConfig.startQuantity = 40;
+        animalConfig.startQuantity = 75;
         animalConfig.foodSatiety = 0.15;
         animalConfig.moveSpeed = 4;
         animalConfig.maxBabiesQuantity = 6;
+
+        animalConfig.eatingProbability = new HashMap<>() {{
+            put(AnimalType.Caterpillar, 90);
+        }};
 
         return animalConfig;
     }
@@ -227,7 +285,7 @@ public class IslandConfigGenerator {
         AnimalConfig animalConfig = new AnimalConfig();
         animalConfig.weight = 0.01;
         animalConfig.maxQuantityAtLocation = 1000;
-        animalConfig.startQuantity = 50;
+        animalConfig.startQuantity = 500;
         animalConfig.foodSatiety = 0;
         animalConfig.moveSpeed = 0;
         animalConfig.maxBabiesQuantity = 6;
@@ -235,6 +293,3 @@ public class IslandConfigGenerator {
         return animalConfig;
     }
 }
-
-
-

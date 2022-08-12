@@ -16,7 +16,4 @@ public class BiotaConfig {
      * Количество животных каждого вида на старте симуляции
      */
     public int startQuantity;
-
-
-    }
-
+}

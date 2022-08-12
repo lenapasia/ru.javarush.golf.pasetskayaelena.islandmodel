@@ -3,7 +3,7 @@ package ru.javarush.golf.pasetskayaelena.islandmodel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.javarush.golf.pasetskayaelena.islandmodel.configs.IslandConfig;
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals.Animal;
-import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals.DirectionType;
+import ru.javarush.golf.pasetskayaelena.islandmodel.entities.motion.DirectionType;
 import ru.javarush.golf.pasetskayaelena.islandmodel.generators.IslandConfigGenerator;
 import ru.javarush.golf.pasetskayaelena.islandmodel.processors.AnimalLifeCycleProcessor;
 import ru.javarush.golf.pasetskayaelena.islandmodel.processors.PlantGenerationProcessor;
@@ -42,7 +42,7 @@ public class Main {
 
         System.out.println("*** Сотворение мира");
 
-        Island island = new IslandGenerator().generate(islandConfig);
+        Island island = new IslandGenerator(islandConfig).generate();
 
         System.out.println("Бог создал остров 🌍");
         System.out.println("добавил растения ☘");

@@ -2,6 +2,7 @@ package ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals;
 
 import ru.javarush.golf.pasetskayaelena.islandmodel.configs.AnimalConfig;
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.Biota;
+import ru.javarush.golf.pasetskayaelena.islandmodel.entities.motion.DirectionType;
 import ru.javarush.golf.pasetskayaelena.islandmodel.utils.Randomizer;
 
 public abstract class Animal extends Biota {
@@ -9,9 +10,8 @@ public abstract class Animal extends Biota {
     private static final int MIN_SATIETY = 0;
     private static final int MAX_SATIETY = 100;
     private static final int SATIETY_EXHAUSTION_STEP = 5;
-    private static final int SATIETY_FOR_REPRODUCTION = 80;
 
-    private final AnimalConfig animalConfig;
+    protected final AnimalConfig animalConfig;
 
     /**
      * Насыщение в %: 0-100. Когда = 0 - животное умирает.
@@ -29,15 +29,20 @@ public abstract class Animal extends Biota {
 
     public abstract AnimalType getType();
 
+    public boolean hasOneOfTypes(AnimalType... type ) {
+        for (AnimalType animalType : type) {
+            if (this.getType() == animalType) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * @return Сколько требуется килограмм пищи для полного насыщения
      */
     public int getRequiredFoodForFullSatiety() {
         return (int) Math.round(animalConfig.foodSatiety * (MAX_SATIETY - satiety) / 100);
-    }
-
-    public boolean isReadyToReproduce() {
-        return satiety > SATIETY_FOR_REPRODUCTION;
     }
 
     /**
@@ -58,12 +63,16 @@ public abstract class Animal extends Biota {
     }
 
     public boolean decreaseSatiety() {
-        if ((satiety - SATIETY_EXHAUSTION_STEP) < MIN_SATIETY) {
+        return decreaseSatiety(SATIETY_EXHAUSTION_STEP);
+    }
+
+    public boolean decreaseSatiety(int value) {
+        if ((satiety - value) < MIN_SATIETY) {
             satiety = MIN_SATIETY;
         } else {
-            satiety -= SATIETY_EXHAUSTION_STEP;
+            satiety -= value;
         }
-        return satiety > MIN_SATIETY ? true : false;
+        return satiety > MIN_SATIETY;
     }
 
     public void eat(Biota biota) {
@@ -77,5 +86,19 @@ public abstract class Animal extends Biota {
         } else {
             satiety = MAX_SATIETY;
         }
+    }
+
+    public boolean canEat(Animal animal) {
+        return animalConfig.eatingProbability.containsKey(animal.getType());
+    }
+
+    public boolean tryToEat(Animal animal) {
+        int probability = animalConfig.eatingProbability.get(animal.getType());
+        // съедает животное, если выпал шанс больше, чем в конфигурации для этого типа
+        return Randomizer.rnd(0, 100) >= probability;
+    }
+
+    public boolean canEatOtherAnimals() {
+        return animalConfig.eatingProbability != null && animalConfig.eatingProbability.size() > 0;
     }
 }
