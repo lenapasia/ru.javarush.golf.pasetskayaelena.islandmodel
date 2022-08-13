@@ -13,9 +13,6 @@ public abstract class Animal extends Biota {
 
     protected final AnimalConfig animalConfig;
 
-    /**
-     * Насыщение в %: 0-100. Когда = 0 - животное умирает.
-     */
     private int satiety = MAX_SATIETY;
 
     public Animal(AnimalConfig animalConfig) {
@@ -38,16 +35,10 @@ public abstract class Animal extends Biota {
         return false;
     }
 
-    /**
-     * @return Сколько требуется килограмм пищи для полного насыщения
-     */
-    public int getRequiredFoodForFullSatiety() {
-        return (int) Math.round(animalConfig.foodSatiety * (MAX_SATIETY - satiety) / 100);
+    public double getRequiredFoodForFullSatiety() {
+        return animalConfig.foodSatiety * (MAX_SATIETY - satiety) / 100;
     }
 
-    /**
-     * @return Выбор направления движения
-     */
     public static DirectionType chooseMoveDirection(DirectionType[] availableDirections) {
         int randomIndex = (int) (Math.random() * availableDirections.length);
         return availableDirections[randomIndex];
@@ -56,7 +47,6 @@ public abstract class Animal extends Biota {
     public int chooseMoveSpeed() {
         return Randomizer.rnd(1, animalConfig.moveSpeed);
     }
-
 
     public int getSatiety() {
         return satiety;
@@ -77,10 +67,11 @@ public abstract class Animal extends Biota {
 
     public void eat(Biota biota) {
         if (satiety >= MAX_SATIETY) {
-            throw new RuntimeException("Нельзя съесть: насыщение = 100%");
+            throw new RuntimeException("Can't eat: satiety = 100%");
         }
 
         int eatingSatiety = (int) (100 * biota.getWeight() / animalConfig.foodSatiety);
+        if (eatingSatiety > 100) {eatingSatiety = 100;}
         if ((satiety + eatingSatiety) < MAX_SATIETY) {
             satiety = satiety + eatingSatiety;
         } else {
@@ -94,7 +85,6 @@ public abstract class Animal extends Biota {
 
     public boolean tryToEat(Animal animal) {
         int probability = animalConfig.eatingProbability.get(animal.getType());
-        // съедает животное, если выпал шанс больше, чем в конфигурации для этого типа
         return Randomizer.rnd(0, 100) >= probability;
     }
 

@@ -40,14 +40,14 @@ public class Main {
 
         IslandConfig islandConfig = loadConfig();
 
-        System.out.println("*** Сотворение мира");
+        System.out.println("*** World creation");
 
         Island island = new IslandGenerator(islandConfig).generate();
 
-        System.out.println("Бог создал остров 🌍");
-        System.out.println("добавил растения ☘");
-        System.out.println("добавил зверей 👣");
-        System.out.println("Бог покинул программу ***");
+        System.out.println("God made an island 🌍");
+        System.out.println("added plants ☘");
+        System.out.println("added animals 👣");
+        System.out.println("God left the program ***");
 
         new IslandStatisticsDisplayer().display(island);
 
@@ -57,10 +57,9 @@ public class Main {
     }
 
     private static IslandConfig loadConfig() throws IOException {
-        System.out.println("Загрузка конфигурации ...");
+        System.out.println("Download configuration ...");
 
         IslandConfig islandConfig;
-        // если файл конфигурации не существует, то создать его с значениями по умолчанию
         if (Files.notExists(Path.of(CONFIG_FILE_PATH))) {
             islandConfig = new IslandConfigGenerator().generate();
 
@@ -72,7 +71,6 @@ public class Main {
                 writer.write(json);
             }
         } else {
-            // иначе прочитать и десериализовать файл конфигурации
             String jsonString = Files.readString(Path.of(CONFIG_FILE_PATH));
 
             islandConfig = new ObjectMapper().readValue(jsonString, IslandConfig.class);

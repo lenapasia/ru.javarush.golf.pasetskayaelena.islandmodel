@@ -13,7 +13,6 @@ import ru.javarush.golf.pasetskayaelena.islandmodel.utils.DirectionUtils;
 import ru.javarush.golf.pasetskayaelena.islandmodel.utils.Randomizer;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class AnimalsMotionHandler {
@@ -27,13 +26,8 @@ public class AnimalsMotionHandler {
     }
 
     public void processAnimalsMotion(Location location) {
-        // stage 1
         initiateMotionRequests(location);
-
-        // stage 2
         processOfMotionRequests(location);
-
-        // stage 3
         completeMotionRequests(location);
     }
 
@@ -41,7 +35,6 @@ public class AnimalsMotionHandler {
         DirectionType[] availableDirections = DirectionUtils.getAvailableDirections(location.getX(), location.getY(),
                 islandConfig.width, islandConfig.height);
 
-        // создание запросов на исходящее движение из текущей локации
         for (Biota eachBiota : location.getBiotas()) {
             if (eachBiota instanceof Animal) {
                 Animal eachAnimal = (Animal) eachBiota;
@@ -51,17 +44,16 @@ public class AnimalsMotionHandler {
     }
 
     private void createAnimalMotionRequest(Location location, DirectionType[] availableDirections, Animal eachAnimal) {
-        // перемещение животных
         boolean needToMove = Randomizer.rnd(0, 1) == 1;
         if (needToMove &&
-                !location.hasMotionRequestsForAnimal(eachAnimal, MotionRequestStatus.Outcoming, MotionRequestStatus.Approved)) {
+                !location.hasMotionRequestsForAnimal(eachAnimal, MotionRequestStatus.Outgoing, MotionRequestStatus.Approved)) {
             int randomMoveSpeed = eachAnimal.chooseMoveSpeed();
             DirectionType randomMoveDirection = Animal.chooseMoveDirection(availableDirections);
             Coordinates coordinates = DirectionUtils.calculateCoordinates(location.getX(), location.getY(),
                     randomMoveDirection, randomMoveSpeed, islandConfig.width, islandConfig.height);
             Location toLocation = island.findLocation(coordinates.getX(), coordinates.getY());
             synchronized (location.getMotionRequests()) {
-                location.addMotionRequest(eachAnimal, new MotionRequest(toLocation, MotionRequestStatus.Outcoming));
+                location.addMotionRequest(eachAnimal, new MotionRequest(toLocation, MotionRequestStatus.Outgoing));
             }
             synchronized (toLocation.getMotionRequests()) {
                 toLocation.addMotionRequest(eachAnimal, new MotionRequest(location, MotionRequestStatus.Incoming));

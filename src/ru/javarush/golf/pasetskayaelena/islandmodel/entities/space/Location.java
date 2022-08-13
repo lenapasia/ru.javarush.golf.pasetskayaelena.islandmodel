@@ -70,16 +70,9 @@ public class Location {
     }
 
     public int countAnimalsByType(AnimalType animalType) {
-        synchronized (biotas) {
-            int countAnimalsByType = 0;
-            for (Biota biota : biotas) {
-                if (!(biota instanceof Plant) && ((Animal) biota).getType() == animalType) {
-                    countAnimalsByType++;
-                }
-            }
-            return countAnimalsByType;
+
+            return countAnimalsByTypeThatReadyForReproduction(animalType, 0);
         }
-    }
 
     public int countAnimalsByTypeThatReadyForReproduction(AnimalType animalType, int minReproductionSatiety) {
         synchronized (biotas) {
@@ -87,7 +80,7 @@ public class Location {
             for (Biota biota : biotas) {
                 if (biota instanceof Animal) {
                     Animal animal = (Animal) biota;
-                    if (animal.getType() == animalType && animal.getSatiety() > minReproductionSatiety) {
+                    if (animal.getType() == animalType && animal.getSatiety() >= minReproductionSatiety) {
                         countAnimalsByType++;
                     }
                 }

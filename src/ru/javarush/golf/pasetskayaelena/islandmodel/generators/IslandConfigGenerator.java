@@ -12,8 +12,8 @@ public class IslandConfigGenerator {
     public IslandConfig generate() {
         IslandConfig islandConfig = new IslandConfig();
         islandConfig.simulationCycleDuration = 1;
-        islandConfig.width = 20; // 20
-        islandConfig.height = 100; // 100
+        islandConfig.width = 20;
+        islandConfig.height = 100;
         islandConfig.plantConfig = generatePlant();
         islandConfig.animalTypeToConfig = generateAnimals();
 

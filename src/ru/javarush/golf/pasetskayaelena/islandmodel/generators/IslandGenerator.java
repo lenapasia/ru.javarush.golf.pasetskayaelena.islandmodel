@@ -22,9 +22,6 @@ public class IslandGenerator {
         this.animalGenerator = new AnimalGenerator(islandConfig);
     }
 
-    /**
-     * Генерирует локации согласно конфигурации
-     */
     public Island generate() {
         ArrayList<Location> locations = new ArrayList<>();
 
@@ -84,7 +81,6 @@ public class IslandGenerator {
                 }
                 animalTypeToRemainingCount.put(eachAnimalType, tmpAnimalsCount);
             }
-
             for (int n = 0; n < animalsCount; n++) {
                 biotas.add(animalGenerator.createByType(eachAnimalType));
             }

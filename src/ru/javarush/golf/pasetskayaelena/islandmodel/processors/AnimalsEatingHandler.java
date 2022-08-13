@@ -4,6 +4,7 @@ import ru.javarush.golf.pasetskayaelena.islandmodel.configs.AnimalConfig;
 import ru.javarush.golf.pasetskayaelena.islandmodel.configs.IslandConfig;
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.Biota;
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals.Animal;
+import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals.AnimalType;
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals.herbivores.Herbivore;
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals.predators.Predator;
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.plants.Plant;
@@ -36,9 +37,7 @@ public class AnimalsEatingHandler {
             if (eachBiota instanceof Animal) {
                 Animal eachAnimal = (Animal) eachBiota;
                 if (!animalsToDelete.contains(eachAnimal)) {
-                    // если животное голодное
                     if (isHungry(eachAnimal)) {
-                        // если травоядное
                         if (eachAnimal instanceof Herbivore) {
                             if (eachAnimal.canEatOtherAnimals()) {
                                 if (plants.size() == 0 || Randomizer.rnd(0, 1) == 1) {
@@ -50,12 +49,9 @@ public class AnimalsEatingHandler {
                                 herbivoreEat(plantsToDelete, plants, eachAnimal);
                             }
                         } else if (eachAnimal instanceof Predator) {
-                            // если хищник
                             predatorEat(animalsToDelete, animals, eachAnimal);
                         }
                     }
-
-                    // Уменьшаем насыщение и животное умирает, если насыщение = 0
                     boolean alive = eachAnimal.decreaseSatiety();
                     if (!alive) {
                         animalsToDelete.add(eachAnimal);
@@ -72,17 +68,14 @@ public class AnimalsEatingHandler {
     }
 
     private void herbivoreEat(List<Plant> plantsToDelete, List<Plant> plants, Animal animal) {
-        // Травоядные едят растения
         if (plants.size() > 0) {
-            // считаем сколько килограмм пищи необходимо для полного насыщения
-            int requiredFoodInKgForFullSatiety = animal.getRequiredFoodForFullSatiety();
+            double requiredFoodInKgForFullSatiety = animal.getRequiredFoodForFullSatiety();
+            if (animal.getType() == AnimalType.Caterpillar){requiredFoodInKgForFullSatiety = 0.001;}
             if (requiredFoodInKgForFullSatiety > 0) {
-                // считаем сколько растений необходимо для полного насыщения
                 int requiredPlantsCount = (int) (requiredFoodInKgForFullSatiety / islandConfig.plantConfig.weight);
-                // выбираем съедаемые растения
+                requiredPlantsCount = requiredPlantsCount < 1 ? 1 : requiredPlantsCount;
                 int toIndex = requiredPlantsCount >= plants.size() ? plants.size() : requiredPlantsCount;
                 List<Plant> requiredPlants = plants.subList(0, toIndex);
-                // съедаем растения
                 for (Plant requiredPlant : requiredPlants) {
                     animal.eat(requiredPlant);
                     plantsToDelete.add(requiredPlant);
@@ -93,13 +86,10 @@ public class AnimalsEatingHandler {
     }
 
     private void predatorEat(List<Animal> animalToDelete, List<Animal> animals, Animal feedingAnimal) {
-        // хищники едят других животных
         if (animals.size() > 0) {
             AnimalConfig animalConfig = islandConfig.animalTypeToConfig.get(feedingAnimal.getType());
             for (Animal animal : animals) {
-                // пытается съесть животное, если оно не было удалено ранее и подходит по типу
                 if (!animalToDelete.contains(animal) && feedingAnimal != animal && feedingAnimal.canEat(animal)) {
-                    // съедает животное, если выпал шанс больше, чем в конфигурации для этого типа
                     if (feedingAnimal.tryToEat(animal)) {
                         feedingAnimal.eat(animal);
                         animalToDelete.add(animal);

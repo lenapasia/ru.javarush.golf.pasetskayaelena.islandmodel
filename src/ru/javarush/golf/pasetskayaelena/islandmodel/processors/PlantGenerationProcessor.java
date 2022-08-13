@@ -23,7 +23,6 @@ public class PlantGenerationProcessor implements Runnable {
     public void run() {
         List<String> t = locations.stream().map(location -> "[" + location.getX() + " " + location.getY() + "]").toList();
         String s = Arrays.toString(t.toArray(new String[]{}));
-        //System.out.println("Процесс генерации растений для локаций " + s + " : " + LocalTime.now());
         Thread.currentThread().setName("P " + s);
 
         final int maxPlantsCount = islandConfig.plantConfig.maxQuantityAtLocation;

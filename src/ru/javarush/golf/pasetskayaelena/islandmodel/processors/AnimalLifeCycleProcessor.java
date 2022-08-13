@@ -14,6 +14,7 @@ import java.util.List;
 public final class AnimalLifeCycleProcessor implements Runnable {
 
     private static final int SATIETY_FOR_REPRODUCTION = 94;
+    public static final int DECREASE_SATIETY_AFTER_BORN = 30;
     private final List<Location> locations;
     private final IslandConfig islandConfig;
     public final Island island;
@@ -28,7 +29,6 @@ public final class AnimalLifeCycleProcessor implements Runnable {
     public void run() {
         List<String> t = locations.stream().map(location -> "[" + location.getX() + " " + location.getY() + "]").toList();
         String s = Arrays.toString(t.toArray(new String[]{}));
-        //System.out.println("Процесс жизненного цикла животных для локаций " + s + " : " + LocalTime.now());
         Thread.currentThread().setName("A " + s);
 
         for (Location location : locations) {
@@ -45,7 +45,6 @@ public final class AnimalLifeCycleProcessor implements Runnable {
     }
 
     private void reproduceAnimals(Location location) {
-        // животное размножается
         AnimalGenerator animalGenerator = new AnimalGenerator(islandConfig);
         {
             for (AnimalType animalType : AnimalType.values()) {
@@ -63,7 +62,7 @@ public final class AnimalLifeCycleProcessor implements Runnable {
 
                 for (int i = 0; i < newBabies; i++) {
                     Animal animal = animalGenerator.createByType(animalType);
-                    animal.decreaseSatiety(40);
+                    animal.decreaseSatiety(DECREASE_SATIETY_AFTER_BORN);
                     location.addBiota(animal);
                 }
             }
