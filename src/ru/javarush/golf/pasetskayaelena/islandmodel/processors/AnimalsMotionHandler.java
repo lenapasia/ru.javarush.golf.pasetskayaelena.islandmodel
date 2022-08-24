@@ -44,7 +44,7 @@ public class AnimalsMotionHandler {
     }
 
     private void createAnimalMotionRequest(Location location, DirectionType[] availableDirections, Animal eachAnimal) {
-        boolean needToMove = Randomizer.rnd(0, 1) == 1;
+        boolean needToMove = eachAnimal.isAbleToMove() && Randomizer.rnd(0, 1) == 1;
         if (needToMove &&
                 !location.hasMotionRequestsForAnimal(eachAnimal, MotionRequestStatus.Outgoing, MotionRequestStatus.Approved)) {
             int randomMoveSpeed = eachAnimal.chooseMoveSpeed();

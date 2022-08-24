@@ -24,7 +24,7 @@ public class IslandConfigGenerator {
         BiotaConfig plantConfig = new BiotaConfig();
         plantConfig.weight = 1;
         plantConfig.maxQuantityAtLocation = 200;
-        plantConfig.startQuantity = 500;
+        plantConfig.startQuantity = 1000;
 
         return plantConfig;
     }
@@ -200,10 +200,10 @@ public class IslandConfigGenerator {
         AnimalConfig animalConfig = new AnimalConfig();
         animalConfig.weight = 0.05;
         animalConfig.maxQuantityAtLocation = 500;
-        animalConfig.startQuantity = 150;
+        animalConfig.startQuantity = 100;
         animalConfig.foodSatiety = 0.01;
         animalConfig.moveSpeed = 1;
-        animalConfig.maxBabiesQuantity = 12;
+        animalConfig.maxBabiesQuantity = 8;
 
         animalConfig.eatingProbability = new HashMap<>() {{
             put(AnimalType.Caterpillar, 90);
@@ -271,8 +271,8 @@ public class IslandConfigGenerator {
         animalConfig.maxQuantityAtLocation = 200;
         animalConfig.startQuantity = 75;
         animalConfig.foodSatiety = 0.15;
-        animalConfig.moveSpeed = 4;
-        animalConfig.maxBabiesQuantity = 6;
+        animalConfig.moveSpeed = 3;
+        animalConfig.maxBabiesQuantity = 5;
 
         animalConfig.eatingProbability = new HashMap<>() {{
             put(AnimalType.Caterpillar, 90);

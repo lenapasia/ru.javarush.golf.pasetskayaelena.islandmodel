@@ -1,10 +1,8 @@
 package ru.javarush.golf.pasetskayaelena.islandmodel.processors;
 
-import ru.javarush.golf.pasetskayaelena.islandmodel.configs.AnimalConfig;
 import ru.javarush.golf.pasetskayaelena.islandmodel.configs.IslandConfig;
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.Biota;
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals.Animal;
-import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals.AnimalType;
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals.herbivores.Herbivore;
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals.predators.Predator;
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.plants.Plant;
@@ -15,9 +13,7 @@ import ru.javarush.golf.pasetskayaelena.islandmodel.utils.Randomizer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnimalsEatingHandler {
-
-    public static final int SATIETY_BORDER = 65;
+public final class AnimalsEatingHandler {
 
     private final IslandConfig islandConfig;
     public final Island island;
@@ -36,25 +32,27 @@ public class AnimalsEatingHandler {
         for (Biota eachBiota : location.getBiotas()) {
             if (eachBiota instanceof Animal) {
                 Animal eachAnimal = (Animal) eachBiota;
-                if (!animalsToDelete.contains(eachAnimal)) {
-                    if (isHungry(eachAnimal)) {
-                        if (eachAnimal instanceof Herbivore) {
-                            if (eachAnimal.canEatOtherAnimals()) {
-                                if (plants.size() == 0 || Randomizer.rnd(0, 1) == 1) {
-                                    predatorEat(animalsToDelete, animals, eachAnimal);
+                synchronized (eachAnimal) {
+                    if (!animalsToDelete.contains(eachAnimal)) {
+                        if (isHungry(eachAnimal)) {
+                            if (eachAnimal instanceof Herbivore) {
+                                if (eachAnimal.canEatOtherAnimals()) {
+                                    if (plants.size() == 0 || Randomizer.rnd(0, 1) == 1) {
+                                        predatorEat(animalsToDelete, animals, eachAnimal);
+                                    } else {
+                                        herbivoreEat(plantsToDelete, plants, eachAnimal);
+                                    }
                                 } else {
                                     herbivoreEat(plantsToDelete, plants, eachAnimal);
                                 }
-                            } else {
-                                herbivoreEat(plantsToDelete, plants, eachAnimal);
+                            } else if (eachAnimal instanceof Predator) {
+                                predatorEat(animalsToDelete, animals, eachAnimal);
                             }
-                        } else if (eachAnimal instanceof Predator) {
-                            predatorEat(animalsToDelete, animals, eachAnimal);
                         }
-                    }
-                    boolean alive = eachAnimal.decreaseSatiety();
-                    if (!alive) {
-                        animalsToDelete.add(eachAnimal);
+                        boolean alive = eachAnimal.decreaseSatiety();
+                        if (!alive) {
+                            animalsToDelete.add(eachAnimal);
+                        }
                     }
                 }
             }
@@ -64,17 +62,16 @@ public class AnimalsEatingHandler {
     }
 
     private boolean isHungry(Animal animal) {
-        return animal.getSatiety() < SATIETY_BORDER;
+        return animal.isHungry();
     }
 
     private void herbivoreEat(List<Plant> plantsToDelete, List<Plant> plants, Animal animal) {
         if (plants.size() > 0) {
-            double requiredFoodInKgForFullSatiety = animal.getRequiredFoodForFullSatiety();
-            if (animal.getType() == AnimalType.Caterpillar){requiredFoodInKgForFullSatiety = 0.001;}
+            final double requiredFoodInKgForFullSatiety = animal.getRequiredFoodForFullSatiety();
             if (requiredFoodInKgForFullSatiety > 0) {
                 int requiredPlantsCount = (int) (requiredFoodInKgForFullSatiety / islandConfig.plantConfig.weight);
-                requiredPlantsCount = requiredPlantsCount < 1 ? 1 : requiredPlantsCount;
-                int toIndex = requiredPlantsCount >= plants.size() ? plants.size() : requiredPlantsCount;
+                requiredPlantsCount = Math.max(requiredPlantsCount, 1);
+                int toIndex = Math.min(requiredPlantsCount, plants.size());
                 List<Plant> requiredPlants = plants.subList(0, toIndex);
                 for (Plant requiredPlant : requiredPlants) {
                     animal.eat(requiredPlant);
@@ -87,14 +84,19 @@ public class AnimalsEatingHandler {
 
     private void predatorEat(List<Animal> animalToDelete, List<Animal> animals, Animal feedingAnimal) {
         if (animals.size() > 0) {
-            AnimalConfig animalConfig = islandConfig.animalTypeToConfig.get(feedingAnimal.getType());
+            int trialsCount = Randomizer.rnd(1, 3);
             for (Animal animal : animals) {
                 if (!animalToDelete.contains(animal) && feedingAnimal != animal && feedingAnimal.canEat(animal)) {
                     if (feedingAnimal.tryToEat(animal)) {
                         feedingAnimal.eat(animal);
                         animalToDelete.add(animal);
+                        trialsCount = 0;
+                    } else {
+                        trialsCount--;
                     }
-                    break;
+
+                    if (trialsCount <= 0)
+                        break;
                 }
             }
         }

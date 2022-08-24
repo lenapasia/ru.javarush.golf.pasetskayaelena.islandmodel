@@ -7,9 +7,9 @@ import ru.javarush.golf.pasetskayaelena.islandmodel.entities.space.Location;
 import java.util.Arrays;
 import java.util.List;
 
-public class PlantGenerationProcessor implements Runnable {
+public final class PlantGenerationProcessor implements Runnable {
 
-    private static final int plantsGenerationCount = 125;
+    private static final int plantsGenerationCount = 50;
 
     private final List<Location> locations;
     private final IslandConfig islandConfig;

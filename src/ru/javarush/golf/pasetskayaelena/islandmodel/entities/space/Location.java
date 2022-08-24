@@ -8,14 +8,16 @@ import ru.javarush.golf.pasetskayaelena.islandmodel.entities.motion.MotionReques
 import ru.javarush.golf.pasetskayaelena.islandmodel.entities.motion.MotionRequestStatus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Location {
     private final int x;
     private final int y;
-    private final ArrayList< Biota> biotas;
+    private final CopyOnWriteArrayList< Biota> biotas;
 
     private volatile Map<Animal, MotionRequest> motionRequests = new ConcurrentHashMap<>();
 
@@ -27,15 +29,15 @@ public class Location {
         return y;
     }
 
-    public Location(int x, int y, ArrayList<Biota> biotas) {
+    public Location(int x, int y, List<Biota> biotas) {
         this.x = x;
         this.y = y;
-        this.biotas = biotas;
+        this.biotas = new CopyOnWriteArrayList<>(biotas);
     }
 
     public List<Biota> getBiotas() {
         synchronized (biotas) {
-            return List.copyOf(biotas);
+            return Collections.unmodifiableList(biotas);
         }
     }
 

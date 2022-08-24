@@ -10,6 +10,7 @@ public abstract class Animal extends Biota {
     private static final int MIN_SATIETY = 0;
     private static final int MAX_SATIETY = 100;
     private static final int SATIETY_EXHAUSTION_STEP = 5;
+    private static final int SATIETY_HUNGER_BORDER = 65;
 
     protected final AnimalConfig animalConfig;
 
@@ -36,6 +37,9 @@ public abstract class Animal extends Biota {
     }
 
     public double getRequiredFoodForFullSatiety() {
+        if (getType() == AnimalType.Caterpillar)
+            return 0.001;
+
         return animalConfig.foodSatiety * (MAX_SATIETY - satiety) / 100;
     }
 
@@ -44,8 +48,14 @@ public abstract class Animal extends Biota {
         return availableDirections[randomIndex];
     }
 
+    public boolean isAbleToMove() { return animalConfig.moveSpeed > 0; }
+
     public int chooseMoveSpeed() {
         return Randomizer.rnd(1, animalConfig.moveSpeed);
+    }
+
+    public boolean isHungry() {
+        return satiety < SATIETY_HUNGER_BORDER;
     }
 
     public int getSatiety() {

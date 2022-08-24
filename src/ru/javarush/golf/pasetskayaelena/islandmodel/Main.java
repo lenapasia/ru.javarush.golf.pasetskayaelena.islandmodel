@@ -2,8 +2,6 @@ package ru.javarush.golf.pasetskayaelena.islandmodel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.javarush.golf.pasetskayaelena.islandmodel.configs.IslandConfig;
-import ru.javarush.golf.pasetskayaelena.islandmodel.entities.biotas.animals.Animal;
-import ru.javarush.golf.pasetskayaelena.islandmodel.entities.motion.DirectionType;
 import ru.javarush.golf.pasetskayaelena.islandmodel.generators.IslandConfigGenerator;
 import ru.javarush.golf.pasetskayaelena.islandmodel.processors.AnimalLifeCycleProcessor;
 import ru.javarush.golf.pasetskayaelena.islandmodel.processors.PlantGenerationProcessor;
@@ -28,16 +26,7 @@ import java.util.concurrent.TimeUnit;
 public class Main {
     private static final String CONFIG_FILE_PATH = "island-config.json";
 
-    public static void testRound() {
-        DirectionType[] directionTypes = { DirectionType.Right, DirectionType.Left};
-        DirectionType directionType = Animal.chooseMoveDirection(directionTypes);
-        System.out.println(directionType);
-    }
-
     public static void main(String[] args) throws IOException {
-
-        testRound();
-
         IslandConfig islandConfig = loadConfig();
 
         System.out.println("*** World creation");
